@@ -57,7 +57,7 @@ variable "description" {
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+    error_message = "description: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
 
@@ -139,11 +139,17 @@ variable "tag_annotations" {
   default = []
 
   validation {
-    condition = length(var.tag_annotations) == 0 ? true : (
-      alltrue([for ta in var.tag_annotations : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", trimspace(ta.key)))]) &&
-      alltrue([for ta in var.tag_annotations : length(coalesce(ta.value, "")) <= 2048])
-    )
-    error_message = "tag_annotations: key must match [a-zA-Z0-9_.:-]{1,64}; value length must be <= 2048."
+    condition = length(var.tag_annotations) == 0 ? true : alltrue([
+      for ta in var.tag_annotations : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", trimspace(ta.key)))
+    ])
+    error_message = "tag_annotations: key must match [a-zA-Z0-9_.:-]{1,64}."
+  }
+
+  validation {
+    condition = length(var.tag_annotations) == 0 ? true : alltrue([
+      for ta in var.tag_annotations : length(coalesce(ta.value, "")) <= 2048
+    ])
+    error_message = "tag_annotations: value length must be <= 2048."
   }
 }
 
