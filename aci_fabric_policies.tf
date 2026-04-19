@@ -848,6 +848,7 @@ module "aci_keyring" {
   ca_certificate = try(each.value.ca_certificate, "")
   certificate    = try(each.value.certificate, "")
   private_key    = try(each.value.private_key, null)
+  modulus        = try(each.value.modulus, local.defaults.apic.fabric_policies.aaa.key_rings.modulus)
 
   depends_on = [
     module.aci_ca_certificate
