@@ -51,8 +51,8 @@ variable "modulus" {
   validation {
     condition = (
       var.modulus == null || var.modulus == "" ||
-      contains(["mod512", "mod1024", "mod2048", "mod3072", "mod4096"], var.modulus)
+      contains(["mod512", "mod1024", "mod1536", "mod2048", "mod3072", "mod4096"], var.modulus)
     )
-    error_message = "modulus must be one of: mod512, mod1024, mod2048, mod3072, mod4096."
+    error_message = "modulus must be one of: mod512, mod1024, mod1536, mod2048, mod3072, mod4096."
   }
 }
