@@ -127,6 +127,6 @@ resource "aci_rest_managed" "tagAnnotation" {
   class_name = "tagAnnotation"
   content = {
     key   = each.value.key
-    value = each.value.value == null ? "" : each.value.value
+    value = each.value.value
   }
 }

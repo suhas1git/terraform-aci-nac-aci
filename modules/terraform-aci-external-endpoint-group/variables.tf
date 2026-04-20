@@ -253,26 +253,22 @@ variable "tag_annotations" {
   description = "List of tagAnnotation children (key required, value optional). Each key must be unique within the list."
   type = list(object({
     key   = string
-    value = optional(string)
+    value = optional(string, "")
   }))
   default = []
 
   validation {
-    condition = alltrue([
-      for tag in var.tag_annotations :
-      length(tag.key) >= 1 && length(tag.key) <= 64 && length(regexall("[^-a-zA-Z0-9_.:]", tag.key)) == 0
+    condition = length(var.tag_annotations) == 0 ? true : alltrue([
+      for ta in var.tag_annotations : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", trimspace(ta.key)))
     ])
-    error_message = "`tag_annotations[].key` must be 1-64 characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-` (tagAnnotation key)."
+    error_message = "tag_annotations: key must match [a-zA-Z0-9_.:-]{1,64}."
   }
 
   validation {
-    condition = alltrue([
-      for tag in var.tag_annotations : (
-        length(tag.value == null ? "" : tag.value) <= 64
-        && length(regexall("[^-a-zA-Z0-9_.:]", tag.value == null ? "" : tag.value)) == 0
-      )
+    condition = length(var.tag_annotations) == 0 ? true : alltrue([
+      for ta in var.tag_annotations : length("${try(ta.value, null)}") <= 2048
     ])
-    error_message = "`tag_annotations[].value` must be 0-64 characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-` (empty string allowed)."
+    error_message = "tag_annotations: value length must be <= 2048."
   }
 
   validation {

@@ -1684,7 +1684,7 @@ locals {
           }], [])
           tag_annotations = [for tag in try(epg.tag_annotations, []) : {
             key   = tostring(tag.key)
-            value = try("${tag.value}", "")
+            value = "${try(tag.value, null)}"
           }]
           route_control_profiles = [for rcp in try(epg.route_control_profiles, []) : {
             name      = rcp.name
@@ -1979,7 +1979,7 @@ locals {
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
           tag_annotations = [for tag in try(epg.tag_annotations, []) : {
             key   = tostring(tag.key)
-            value = try("${tag.value}", "")
+            value = "${try(tag.value, null)}"
           }]
           subnets = [for subnet in try(epg.subnets, []) : {
             name                           = try(subnet.name, "")
