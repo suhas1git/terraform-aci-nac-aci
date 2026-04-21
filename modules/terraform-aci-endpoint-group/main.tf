@@ -236,7 +236,7 @@ resource "aci_rest_managed" "tagAnnotation" {
   class_name = "tagAnnotation"
   content = {
     key   = each.value.key
-    value = coalesce(each.value.value, "")
+    value = each.value.value
   }
 }
 

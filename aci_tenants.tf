@@ -357,7 +357,7 @@ locals {
           bridge_domain               = try("${epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
           data_plane_policing_policy  = try("${epg.data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
           tags                        = try(epg.tags, [])
-          tag_annotations             = [for tag in try(epg.tag_annotations, []) : { key = tag.key, value = tag.value }]
+          tag_annotations             = [for tag in try(epg.tag_annotations, []) : { key = tag.key, value = try(tag.value == null ? "" : tostring(tag.value), "") }]
           trust_control_policy        = try("${epg.trust_control_policy}${local.defaults.apic.tenants.policies.trust_control_policies.name_suffix}", "")
           contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
