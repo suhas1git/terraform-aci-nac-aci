@@ -2,6 +2,11 @@ version: '>= 0.14.0'
 
 formatter: markdown table
 
+# Keep Providers column on required_providers constraints (>= 2.0.0), not the
+# exact version from .terraform.lock.hcl, so local pre-commit matches CI.
+settings:
+  lockfile: false
+
 content: |-
   # Terraform ACI External Endpoint Group Module
 
