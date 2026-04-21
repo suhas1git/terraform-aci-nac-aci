@@ -266,7 +266,7 @@ variable "tag_annotations" {
 
   validation {
     condition = length(var.tag_annotations) == 0 ? true : alltrue([
-      for ta in var.tag_annotations : length("${try(ta.value, null)}") <= 2048
+      for ta in var.tag_annotations : length(try(ta.value == null ? "" : tostring(ta.value), "")) <= 2048
     ])
     error_message = "tag_annotations: value length must be <= 2048."
   }
