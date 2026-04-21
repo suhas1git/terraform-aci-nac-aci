@@ -2,6 +2,11 @@ version: '>= 0.14.0'
 
 formatter: markdown table
 
+# Providers table: use required_providers constraints, not .terraform.lock.hcl pins,
+# so README matches CI and local pre-commit does not flip 2.x.y vs >= 2.0.0.
+settings:
+  lockfile: false
+
 content: |-
   # Terraform ACI Endpoint Group Module
 
