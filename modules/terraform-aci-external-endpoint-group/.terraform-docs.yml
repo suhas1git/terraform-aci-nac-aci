@@ -2,10 +2,6 @@ version: '>= 0.14.0'
 
 formatter: markdown table
 
-# Providers table: constraints from versions.tf, not lockfile pins (CI stability).
-settings:
-  lockfile: false
-
 content: |-
   # Terraform ACI External Endpoint Group Module
 

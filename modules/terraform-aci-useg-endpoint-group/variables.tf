@@ -123,16 +123,11 @@ variable "tag_annotations" {
 
   validation {
     condition = length(var.tag_annotations) == 0 ? true : alltrue([
-      for ta in var.tag_annotations : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", trimspace(ta.key)))
+      for ta in var.tag_annotations :
+      can(regex("^[a-zA-Z0-9_.:-]{1,64}$", trimspace(ta.key)))
+      && length(try(ta.value == null ? "" : tostring(ta.value), "")) <= 2048
     ])
-    error_message = "tag_annotations: key must match [a-zA-Z0-9_.:-]{1,64}."
-  }
-
-  validation {
-    condition = length(var.tag_annotations) == 0 ? true : alltrue([
-      for ta in var.tag_annotations : length(try(ta.value == null ? "" : tostring(ta.value), "")) <= 2048
-    ])
-    error_message = "tag_annotations: value length must be <= 2048."
+    error_message = "tag_annotations: key must match [a-zA-Z0-9_.:-]{1,64}; value length must be <= 2048."
   }
 }
 
