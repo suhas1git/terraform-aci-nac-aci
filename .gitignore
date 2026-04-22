@@ -5,9 +5,6 @@
 ### dotenv ###
 .env
 
-### Cursor IDE ###
-.cursor/
-
 ### Emacs ###
 # -*- mode: gitignore; -*-
 *~

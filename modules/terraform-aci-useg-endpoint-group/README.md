@@ -108,7 +108,7 @@ module "aci_useg_endpoint_group" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | 2.19.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.15.0 |
 
 ## Inputs
 
