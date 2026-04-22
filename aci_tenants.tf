@@ -599,6 +599,7 @@ locals {
           custom_qos_policy           = try("${useg_epg.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
           bridge_domain               = try("${useg_epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
           tags                        = try(useg_epg.tags, [])
+          tag_annotations             = [for tag in try(useg_epg.tag_annotations, []) : { key = tag.key, value = try(tag.value == null ? "" : tostring(tag.value), "") }]
           trust_control_policy        = try("${useg_epg.trust_control_policy}${local.defaults.apic.tenants.policies.trust_control_policies.name_suffix}", "")
           contract_consumers          = try([for contract in useg_epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_providers          = try([for contract in useg_epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
@@ -692,6 +693,7 @@ module "aci_useg_endpoint_group" {
   custom_qos_policy           = each.value.custom_qos_policy
   bridge_domain               = each.value.bridge_domain
   tags                        = each.value.tags
+  tag_annotations             = each.value.tag_annotations
   trust_control_policy        = each.value.trust_control_policy
   contract_consumers          = each.value.contract_consumers
   contract_providers          = each.value.contract_providers

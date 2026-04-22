@@ -1,6 +1,6 @@
 module "aci_useg_endpoint_group" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-group"
-  version = ">= 0.8.0"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-useg-endpoint-group"
+  version = ">= 0.9.1"
 
   tenant                      = "ABC"
   application_profile         = "AP1"
@@ -26,6 +26,11 @@ module "aci_useg_endpoint_group" {
   tags = [
     "tag1",
     "tag2"
+  ]
+  # tagAnnotation (uSeg fvAEPg children); key 1-64 / value 0-2048 per variable validation (nac-aci ten_ap_useg_endpoint_groups_tag_annotations)
+  tag_annotations = [
+    { key = "env", value = "test" },
+    { key = "useg", value = "true" },
   ]
 
   match_type = "any"

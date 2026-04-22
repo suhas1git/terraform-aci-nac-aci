@@ -10,8 +10,8 @@ Location in GUI:
 
 ```hcl
 module "aci_useg_endpoint_group" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-group"
-  version = ">= 0.8.0"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-useg-endpoint-group"
+  version = ">= 0.9.1"
 
   tenant                      = "ABC"
   application_profile         = "AP1"
@@ -37,6 +37,11 @@ module "aci_useg_endpoint_group" {
   tags = [
     "tag1",
     "tag2"
+  ]
+  # tagAnnotation (uSeg fvAEPg children); key 1-64 / value 0-2048 per variable validation (nac-aci ten_ap_useg_endpoint_groups_tag_annotations)
+  tag_annotations = [
+    { key = "env", value = "test" },
+    { key = "useg", value = "true" },
   ]
 
   match_type = "any"
@@ -96,7 +101,7 @@ module "aci_useg_endpoint_group" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.15.0 |
 
 ## Providers
@@ -121,6 +126,7 @@ module "aci_useg_endpoint_group" {
 | <a name="input_custom_qos_policy"></a> [custom\_qos\_policy](#input\_custom\_qos\_policy) | Custom QoS policy name. | `string` | `""` | no |
 | <a name="input_bridge_domain"></a> [bridge\_domain](#input\_bridge\_domain) | Bridge domain name. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | List of EPG tags. | `list(string)` | `[]` | no |
+| <a name="input_tag_annotations"></a> [tag\_annotations](#input\_tag\_annotations) | List of tagAnnotation children on uSeg fvAEPg (aligned with nac-aci ten\_ap\_useg\_endpoint\_groups\_tag\_annotations). | <pre>list(object({<br/>    key   = string<br/>    value = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_trust_control_policy"></a> [trust\_control\_policy](#input\_trust\_control\_policy) | EPG Trust Control Policy Name. | `string` | `""` | no |
 | <a name="input_contract_consumers"></a> [contract\_consumers](#input\_contract\_consumers) | List of contract consumers. | `list(string)` | `[]` | no |
 | <a name="input_contract_providers"></a> [contract\_providers](#input\_contract\_providers) | List of contract providers. | `list(string)` | `[]` | no |
@@ -175,6 +181,7 @@ module "aci_useg_endpoint_group" {
 | [aci_rest_managed.fvVmAttr](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvnsUcastAddrBlk](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.ipNexthopEpP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.tagAnnotation](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.tagInst](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAddrInst](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->
