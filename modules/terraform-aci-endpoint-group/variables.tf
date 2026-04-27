@@ -131,7 +131,7 @@ variable "tags" {
 }
 
 variable "tag_annotations" {
-  description = "List of tagAnnotation children on fvAEPg. Keys must be unique; `value` is optional in NAC YAML—omit or pass \"\" for an empty tagAnnotation value."
+  description = "List of tagAnnotation children on fvAEPg (key required, value optional). Each key must be unique within the list."
   type = list(object({
     key   = string
     value = optional(string, "")
@@ -139,15 +139,22 @@ variable "tag_annotations" {
   default = []
 
   validation {
-    condition = length(var.tag_annotations) == 0 ? true : (
-      length(distinct([for tag in var.tag_annotations : tag.key])) == length(var.tag_annotations)
-      && alltrue([
-        for ta in var.tag_annotations :
-        can(regex("^[a-zA-Z0-9_.:-]{1,64}$", trimspace(ta.key)))
-        && can(regex("^[a-zA-Z0-9_.:-]{0,2048}$", try(ta.value == null ? "" : tostring(ta.value), "")))
-      ])
-    )
-    error_message = "tag_annotations: each key must match [a-zA-Z0-9_.:-]{1,64}, each value ^[a-zA-Z0-9_.:-]{0,2048}$, and keys must be unique."
+    condition = length(var.tag_annotations) == 0 ? true : alltrue([
+      for ta in var.tag_annotations : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", trimspace(ta.key)))
+    ])
+    error_message = "tag_annotations: key must match [a-zA-Z0-9_.:-]{1,64}."
+  }
+
+  validation {
+    condition = length(var.tag_annotations) == 0 ? true : alltrue([
+      for ta in var.tag_annotations : length(try(ta.value == null ? "" : tostring(ta.value), "")) <= 2048
+    ])
+    error_message = "tag_annotations: value length must be <= 2048."
+  }
+
+  validation {
+    condition     = length(distinct([for tag in var.tag_annotations : tag.key])) == length(var.tag_annotations)
+    error_message = "`tag_annotations[].key` values must be unique within the list."
   }
 }
 
