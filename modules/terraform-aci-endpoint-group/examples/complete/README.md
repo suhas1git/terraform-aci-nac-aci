@@ -41,7 +41,6 @@ module "aci_endpoint_group" {
     "tag1",
     "tag2"
   ]
-  # tagAnnotation (fvAEPg children); key 1-64 / value 0-2048 per variable validation
   tag_annotations = [
     { key = "env", value = "production" },
     { key = "tier", value = "app" },

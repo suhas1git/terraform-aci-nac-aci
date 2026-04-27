@@ -38,7 +38,6 @@ module "aci_useg_endpoint_group" {
     "tag1",
     "tag2"
   ]
-  # tagAnnotation (uSeg fvAEPg children); key 1-64 / value 0-2048 per variable validation (nac-aci ten_ap_useg_endpoint_groups_tag_annotations)
   tag_annotations = [
     { key = "env", value = "test" },
     { key = "useg", value = "true" },
@@ -126,7 +125,7 @@ module "aci_useg_endpoint_group" {
 | <a name="input_custom_qos_policy"></a> [custom\_qos\_policy](#input\_custom\_qos\_policy) | Custom QoS policy name. | `string` | `""` | no |
 | <a name="input_bridge_domain"></a> [bridge\_domain](#input\_bridge\_domain) | Bridge domain name. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | List of EPG tags. | `list(string)` | `[]` | no |
-| <a name="input_tag_annotations"></a> [tag\_annotations](#input\_tag\_annotations) | List of tagAnnotation children on uSeg fvAEPg (aligned with nac-aci ten\_ap\_useg\_endpoint\_groups\_tag\_annotations). | <pre>list(object({<br/>    key   = string<br/>    value = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_tag_annotations"></a> [tag\_annotations](#input\_tag\_annotations) | List of tagAnnotation children on uSeg fvAEPg (key required, value optional). Each key must be unique within the list. | <pre>list(object({<br/>    key   = string<br/>    value = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_trust_control_policy"></a> [trust\_control\_policy](#input\_trust\_control\_policy) | EPG Trust Control Policy Name. | `string` | `""` | no |
 | <a name="input_contract_consumers"></a> [contract\_consumers](#input\_contract\_consumers) | List of contract consumers. | `list(string)` | `[]` | no |
 | <a name="input_contract_providers"></a> [contract\_providers](#input\_contract\_providers) | List of contract providers. | `list(string)` | `[]` | no |
