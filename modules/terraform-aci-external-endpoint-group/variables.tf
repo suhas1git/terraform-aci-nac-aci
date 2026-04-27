@@ -250,10 +250,10 @@ variable "contract_masters" {
 }
 
 variable "tag_annotations" {
-  description = "List of tagAnnotation children (key required, value optional). Each key must be unique within the list."
+  description = "List of tagAnnotation children (key and value strings; callers should pass \"\" when NAC omits value). Each key must be unique within the list."
   type = list(object({
     key   = string
-    value = optional(string, "")
+    value = string
   }))
   default = []
 
@@ -266,7 +266,7 @@ variable "tag_annotations" {
 
   validation {
     condition = length(var.tag_annotations) == 0 ? true : alltrue([
-      for ta in var.tag_annotations : length(try(ta.value == null ? "" : tostring(ta.value), "")) <= 2048
+      for ta in var.tag_annotations : length(ta.value) <= 2048
     ])
     error_message = "tag_annotations: value length must be <= 2048."
   }
