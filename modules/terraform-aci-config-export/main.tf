@@ -10,6 +10,7 @@ resource "aci_rest_managed" "configExportP" {
 }
 
 resource "aci_rest_managed" "configRsRemotePath" {
+  count      = var.remote_location != "" ? 1 : 0
   dn         = "${aci_rest_managed.configExportP.dn}/rsRemotePath"
   class_name = "configRsRemotePath"
   content = {
@@ -18,6 +19,7 @@ resource "aci_rest_managed" "configRsRemotePath" {
 }
 
 resource "aci_rest_managed" "configRsExportScheduler" {
+  count      = var.scheduler != "" ? 1 : 0
   dn         = "${aci_rest_managed.configExportP.dn}/rsExportScheduler"
   class_name = "configRsExportScheduler"
   content = {
